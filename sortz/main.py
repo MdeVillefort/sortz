@@ -1,32 +1,36 @@
-import pygame
+import argparse
 import sys
-from random import randint
+from visualizer import Visualizer
+from sorters import bubble_sort
 
-pygame.init()
+def main():
 
-size = width, height = 800, 600
-speed = [2, 2]
-black = 0, 0, 0
-white = 255, 255, 255
+    description = \
+    f"""
+    A program to visualze various sorting algorithms.
 
-screen = pygame.display.set_mode(size)
+    example usage:
+    python {__file__} --sorter bubble --fps 30
+    """
 
-bars = [pygame.Surface((8, randint(10, 600))) for _ in range(100)]
-for bar in bars:
-    bar.fill(white)
-rects = [bar.get_rect() for bar in bars]
+    parser = argparse.ArgumentParser(prog = f"python {__file__}", description = description,
+                                     formatter_class = argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--sorter", help = "sorting algorithm",
+                        choices = ["bubble",], required = True)
+    parser.add_argument("--fps", type = int, help = "fps of visualizer",
+                        choices = range(1, 61), metavar = "{1-60}", required = True)
 
-# Position rectangles
-for i, rect in enumerate(rects):
-    rect.bottom = height
-    rect.left = 8 * i
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stdout)
+        sys.exit(1)
+    args = parser.parse_args()
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+    sorter = None
+    if args.sorter == "bubble":
+        sorter = bubble_sort
 
-    screen.fill(black)
-    for bar, rect in zip(bars, rects):
-        screen.blit(bar, rect)
+    v = Visualizer(sorter, args.fps)
+    v.main_loop()
 
-    pygame.display.flip()
+if __name__ == "__main__":
+    main()

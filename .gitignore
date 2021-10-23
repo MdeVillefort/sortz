@@ -1,4 +1,6 @@
-# ignore all . files and . folders
+# Ignore all . files and . folders
 .*
 !/.gitignore
 
+# Ignore compiled python code
+sortz/__pycache__
