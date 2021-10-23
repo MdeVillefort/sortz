@@ -16,8 +16,10 @@ for bar in bars:
     bar.fill(white)
 rects = [bar.get_rect() for bar in bars]
 
+# Position rectangles
 for i, rect in enumerate(rects):
-    rect.move_ip(i * 8, 0)
+    rect.bottom = height
+    rect.left = 8 * i
 
 while True:
     for event in pygame.event.get():
@@ -26,7 +28,5 @@ while True:
     screen.fill(black)
     for bar, rect in zip(bars, rects):
         screen.blit(bar, rect)
-
-    screen.blit(pygame.transform.flip(screen, False, True), (0, 0))
 
     pygame.display.flip()
