@@ -7,7 +7,7 @@ def bubble_sort(bars, once = False):
     bars : List[Tuple[pygame.Surface, pygame.Rect]]
         A list of game objects to be sorted by height
     once : bool
-        A single iteration?
+        Sort once then exit?
 
     Returns
     -------

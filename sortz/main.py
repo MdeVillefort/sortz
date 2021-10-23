@@ -18,7 +18,7 @@ def main():
     parser.add_argument("--sorter", help = "sorting algorithm",
                         choices = ["bubble",], required = True)
     parser.add_argument("--fps", type = int, help = "fps of visualizer",
-                        choices = range(1, 61), metavar = "{1-60}", required = True)
+                        choices = range(1, 121), metavar = "{1-120}", required = True)
 
     if len(sys.argv) == 1:
         parser.print_help(sys.stdout)
