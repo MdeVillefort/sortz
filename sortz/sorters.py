@@ -1,13 +1,12 @@
-def bubble_sort(bars, once = False):
+def bubble_sort(bars):
     """
-    A simple bubble sort function.
+    A simple bubble sort generator that sorts a single value
+    of the array per iteration.
 
     Parameters
     ----------
     bars : List[Tuple[pygame.Surface, pygame.Rect]]
         A list of game objects to be sorted by height
-    once : bool
-        Sort once then exit?
 
     Returns
     -------
@@ -25,8 +24,8 @@ def bubble_sort(bars, once = False):
             if bars[i][1].height > bars[i + 1][1].height:
                 bars[i], bars[i + 1] = bars[i + 1], bars[i]
                 is_sorted = False
-                if once: return is_sorted
+                yield is_sorted
 
         unsorted_until_index -= 1
 
-    return is_sorted
+    yield is_sorted

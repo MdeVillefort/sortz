@@ -1,11 +1,25 @@
 import pygame
 from random import randint
-from sorters import bubble_sort
+from .sorters import bubble_sort
 
 class Visualizer:
+    """
+    Pygame based GUI for visualizing sorting algorithms.
+    """
+
     def __init__(self, sorter, fps):
+        """
+        Initialize the GUI.
+
+        Parameters
+        ----------
+        sorter : generator
+            A generator which sorts a single item in an array per iteration.
+        fps : int
+            The framerate of the visualizer
+        """
+
         self._init_pygame()
-        self.sorter = sorter
         self.fps = fps
         self.screen = pygame.display.set_mode((800, 600))
         self.colors = {
@@ -44,6 +58,9 @@ class Visualizer:
             rect.left = 8 * i
             self.xcoords.append(8 * i)
 
+        # Initialize the sorter generator
+        self.sorter = sorter(self.bars)
+
     def main_loop(self):
         while True:
             self._handle_input()
@@ -70,7 +87,7 @@ class Visualizer:
     def _update(self):
         # Sort and update position if needed
         if not self.is_sorted and not self.paused:
-            self.is_sorted = self.sorter(self.bars, once = True)
+            self.is_sorted = next(self.sorter)
 
             for (_, rect), xcoord in zip(self.bars, self.xcoords):
                 rect.left = xcoord

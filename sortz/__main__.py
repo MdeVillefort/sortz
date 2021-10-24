@@ -1,16 +1,16 @@
 import argparse
 import sys
-from visualizer import Visualizer
-from sorters import bubble_sort
+from .visualizer import Visualizer
+from .sorters import bubble_sort
 
 def main():
 
     description = \
     f"""
-    A program to visualze various sorting algorithms.
+A program to visualze various sorting algorithms.
 
-    example usage:
-    python {__file__} --sorter bubble --fps 30
+example usage:
+python {__file__} --sorter bubble --fps 30
     """
 
     parser = argparse.ArgumentParser(prog = f"python {__file__}", description = description,
