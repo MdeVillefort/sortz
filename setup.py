@@ -24,7 +24,7 @@ setup(
     install_requires = REQUIREMENTS,
     entry_points = {
         "console_scripts" : [
-            "sortz-cli=sortz.main:main"
+            "sortz-cli=sortz.__main__:main"
         ]
     },
 )

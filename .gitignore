@@ -4,3 +4,8 @@
 
 # Ignore compiled python code
 sortz/__pycache__
+
+# Ignore build files
+build/
+dist/
+sortz.egg-info/
