@@ -1,6 +1,7 @@
 import pygame
 from random import randint
 from .sorters import bubble_sort
+from .bar import Bar
 
 class Visualizer:
     """
@@ -43,19 +44,19 @@ class Visualizer:
         for _ in range(100):
             surf = pygame.Surface((8, randint(10, 600)))
             rect = surf.get_rect()
-            self.bars.append((surf, rect))
+            self.bars.append(Bar(surf, rect))
         
         # Color screen and rectangles
         self.screen.fill(self.colors['black'])
-        for surf, _ in self.bars:
-            surf.fill(self.colors['white'])
+        for bar in self.bars:
+            bar.surf.fill(self.colors['white'])
 
         # Set initial position of bars on screen
         self.xcoords = []
         screen_height = self.screen.get_rect().height
-        for i, (surf, rect) in enumerate(self.bars):
-            rect.bottom = screen_height
-            rect.left = 8 * i
+        for i, bar in enumerate(self.bars):
+            bar.rect.bottom = screen_height
+            bar.rect.left = 8 * i
             self.xcoords.append(8 * i)
 
         # Initialize the sorter generator
@@ -89,8 +90,8 @@ class Visualizer:
         if not self.is_sorted and not self.paused:
             self.is_sorted = next(self.sorter)
 
-            for (_, rect), xcoord in zip(self.bars, self.xcoords):
-                rect.left = xcoord
+            for bar, xcoord in zip(self.bars, self.xcoords):
+                bar.rect.left = xcoord
 
         # Update display text
         self.display['line1'] = self.display['font'].render(f"Sorted: {self.is_sorted}",

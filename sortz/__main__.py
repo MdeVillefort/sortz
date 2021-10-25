@@ -1,7 +1,7 @@
 import argparse
 import sys
 from .visualizer import Visualizer
-from .sorters import bubble_sort
+from .sorters import bubble_sort, selection_sort
 
 def main():
 
@@ -16,7 +16,7 @@ python {__file__} --sorter bubble --fps 30
     parser = argparse.ArgumentParser(prog = f"python {__file__}", description = description,
                                      formatter_class = argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--sorter", help = "sorting algorithm",
-                        choices = ["bubble",], required = True)
+                        choices = ["bubble", "selection"], required = True)
     parser.add_argument("--fps", type = int, help = "fps of visualizer",
                         choices = range(1, 121), metavar = "{1-120}", required = True)
 
@@ -28,6 +28,8 @@ python {__file__} --sorter bubble --fps 30
     sorter = None
     if args.sorter == "bubble":
         sorter = bubble_sort
+    elif args.sorter == "selection":
+        sorter = selection_sort
 
     v = Visualizer(sorter, args.fps)
     v.main_loop()

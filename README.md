@@ -1,6 +1,6 @@
 # Visualize Sorting Algorithms
-This package uses pygame to visualize various (currently only bubble, sadge)
-algorithms.  A command line script is provided to launch the GUI.
+This package uses pygame to visualize various sorting algorithms.
+A command line script is provided to launch the GUI.
 
 ## Installation
 You can install the package using pip:
