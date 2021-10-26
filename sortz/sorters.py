@@ -1,3 +1,6 @@
+import pygame
+from .bar import Bar
+
 def bubble_sort(bars):
     """
     A simple bubble sort generator that sorts a single value
@@ -78,6 +81,8 @@ def insertion_sort(bars):
         Has the array been sorted?
     """
 
+    surf = pygame.Surface((8, 0))
+    gap = Bar(surf, surf.get_rect())
     is_sorted = False
 
     for index in range(1, len(bars)):
@@ -87,15 +92,13 @@ def insertion_sort(bars):
 
         while position >= 0:
             if bars[position].rect.height > temp.rect.height:
-                bars[position + 1] = bars[position]
+                bars[position + 1], bars[position] = bars[position], gap
                 position -= 1
+                yield is_sorted
             else:
                 break
 
         bars[position + 1] = temp
-
-        # Should I yield here or after every comparison?
-        yield is_sorted
 
     is_sorted = True
     yield is_sorted

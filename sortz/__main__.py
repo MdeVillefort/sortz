@@ -14,8 +14,9 @@ sortz-cli --fps 60 bubble\
 """
     parser = argparse.ArgumentParser(prog = f"sortz-cli", description = description,
                                      formatter_class = argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--fps", type = int, help = "fps of visualizer",
-                        choices = range(1, 121), metavar = "{1-120}", default = 60)
+    parser.add_argument("--fps", type = int, help = "fps of visualizer (inc. by 10)",
+                        choices = [1] + list(range(10, 241, 10)),
+                        metavar = "{1-240}", default = 60)
     parser.add_argument("sorter", help = "sorting algorithm",
                         choices = ["bubble", "selection", "insertion"])
 

@@ -81,9 +81,19 @@ class Visualizer:
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.paused = not self.paused
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-                self.fps = self.fps + 1 if self.fps < 120 else 120
+                if self.fps == 240:
+                    self.fps = 240
+                elif self.fps == 1:
+                    self.fps += 9
+                else:
+                    self.fps += 10
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
-                self.fps = self.fps - 1 if self.fps > 1 else 1
+                if self.fps == 10:
+                    self.fps -= 9
+                elif self.fps == 1:
+                    self.fps = 1
+                else:
+                    self.fps -= 10
 
     def _update(self):
         # Sort and update position if needed
