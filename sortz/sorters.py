@@ -5,7 +5,7 @@ def bubble_sort(bars):
 
     Parameters
     ----------
-    bars : List[Bars]
+    bars : List[Bar]
         A list of Bar objects to be sorted by height
 
     Returns
@@ -37,8 +37,8 @@ def selection_sort(bars):
 
     Parameters
     ----------
-    bars : List[Bars]
-        A list of Bar object to be sorted by height
+    bars : List[Bar]
+        A list of Bar objects to be sorted by height
 
     Returns
     -------
@@ -58,6 +58,44 @@ def selection_sort(bars):
         if lowest_num_index != i:
             bars[i], bars[lowest_num_index] = bars[lowest_num_index], bars[i]
             yield is_sorted
+
+    is_sorted = True
+    yield is_sorted
+
+def insertion_sort(bars):
+    """
+    A simple insertion sort generator that sorts a single value
+    of the array per iterations.
+
+    Parameters
+    ----------
+    bars : List[Bar]
+        A list of Bar objects to be sorted by height
+
+    Returns
+    -------
+    is_sorted : bool
+        Has the array been sorted?
+    """
+
+    is_sorted = False
+
+    for index in range(1, len(bars)):
+
+        temp = bars[index]
+        position = index - 1
+
+        while position >= 0:
+            if bars[position].rect.height > temp.rect.height:
+                bars[position + 1] = bars[position]
+                position -= 1
+            else:
+                break
+
+        bars[position + 1] = temp
+
+        # Should I yield here or after every comparison?
+        yield is_sorted
 
     is_sorted = True
     yield is_sorted

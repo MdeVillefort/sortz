@@ -1,7 +1,7 @@
 import argparse
 import sys
 from .visualizer import Visualizer
-from .sorters import bubble_sort, selection_sort
+from .sorters import bubble_sort, selection_sort, insertion_sort
 
 def main():
 
@@ -15,9 +15,9 @@ sortz-cli --fps 60 bubble\
     parser = argparse.ArgumentParser(prog = f"sortz-cli", description = description,
                                      formatter_class = argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--fps", type = int, help = "fps of visualizer",
-                        choices = range(1, 121), metavar = "{1-120}")
+                        choices = range(1, 121), metavar = "{1-120}", default = 60)
     parser.add_argument("sorter", help = "sorting algorithm",
-                        choices = ["bubble", "selection"])
+                        choices = ["bubble", "selection", "insertion"])
 
     if len(sys.argv) == 1:
         parser.print_help(sys.stdout)
@@ -29,6 +29,8 @@ sortz-cli --fps 60 bubble\
         sorter = bubble_sort
     elif args.sorter == "selection":
         sorter = selection_sort
+    elif args.sorter == "insertion":
+        sorter = insertion_sort
 
     v = Visualizer(sorter, args.fps)
     v.main_loop()
