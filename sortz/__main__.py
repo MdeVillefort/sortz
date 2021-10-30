@@ -1,7 +1,15 @@
+import json
+import pathlib
 import argparse
 import sys
+
 from .visualizer import Visualizer
 from .sorters import bubble_sort, selection_sort, insertion_sort
+
+HERE = pathlib.Path(__file__).parent
+
+with open(str(HERE / 'sorters.json'), 'r') as f:
+    SORTERS = json.load(f)
 
 def main():
 
@@ -25,15 +33,15 @@ sortz-cli --fps 60 bubble\
         sys.exit(1)
     args = parser.parse_args()
 
-    sorter = None
+    sorter = SORTERS[args.sorter.capitalize()]
     if args.sorter == "bubble":
-        sorter = bubble_sort
+        sorter["Generator"] = bubble_sort
     elif args.sorter == "selection":
-        sorter = selection_sort
+        sorter["Generator"] = selection_sort
     elif args.sorter == "insertion":
-        sorter = insertion_sort
+        sorter["Generator"] = insertion_sort
 
-    v = Visualizer(sorter, args.fps)
+    v = Visualizer(sorter, args.fps, 16)
     v.main_loop()
 
 if __name__ == "__main__":

@@ -1,43 +1,30 @@
 import pygame
 from random import randint
-from .sorters import bubble_sort
 from .bar import Bar
+from .display import Display, COLORS
 
 class Visualizer:
     """
     Pygame based GUI for visualizing sorting algorithms.
     """
 
-    def __init__(self, sorter, fps):
+    def __init__(self, sorter, fps, font_size):
         """
         Initialize the GUI.
 
         Parameters
         ----------
-        sorter : generator
-            A generator which sorts a single item in an array per iteration.
+        sorter : {"Name" : str, "TimeComplexity" : str,
+                  "Description" : str, "Generator" : generator}
+            A dictionary describing the sorting algorithm to be visualized.
         fps : int
             The framerate of the visualizer
         """
 
+        # Initialize pygame and create the screen window
         self._init_pygame()
-        self.fps = fps
         self.screen = pygame.display.set_mode((800, 600))
-        self.colors = {
-            'black' : (0, 0, 0),
-            'white' : (255, 255, 255),
-            'red' : (255, 0, 0),
-        }
         self.clock = pygame.time.Clock()
-        font = pygame.font.Font(None, 12)
-        self.display = {
-        'font' : font,
-        'line1' : font.render("", True, self.colors['red'], None),
-        'line2' : font.render("", True, self.colors['red'], None),
-        'line3' : font.render("", True, self.colors['red'], None),
-        }
-        self.is_sorted = False
-        self.paused = False
 
         # Create list of bars as (Surface, Rect) tuples
         self.bars = []
@@ -47,9 +34,9 @@ class Visualizer:
             self.bars.append(Bar(surf, rect))
         
         # Color screen and rectangles
-        self.screen.fill(self.colors['black'])
+        self.screen.fill(COLORS['black'])
         for bar in self.bars:
-            bar.surf.fill(self.colors['white'])
+            bar.surf.fill(COLORS['white'])
 
         # Set initial position of bars on screen
         self.xcoords = []
@@ -60,7 +47,21 @@ class Visualizer:
             self.xcoords.append(8 * i)
 
         # Initialize the sorter generator
-        self.sorter = sorter(self.bars)
+        self.fps = fps
+        self.sorter = sorter
+        self.step = 1
+        self.sort = self.sorter["Generator"](self.bars)
+        self.is_sorted = False
+        self.is_paused = True
+
+        # Set up displays
+        self.state_display = Display(font_size, {"Framerate" : self.fps,
+                                                 "Step #" : self.step,
+                                                 "Play/Pause" : "<space>"})
+        self.pause_display = Display(font_size, {"Sorting Algorithm" : self.sorter["Name"],
+                                                 "Time Complexity" : self.sorter["TimeComplexity"],
+                                                 "Description" : self.sorter["Description"]},
+                                     "green")
 
     def main_loop(self):
         while True:
@@ -79,7 +80,7 @@ class Visualizer:
             ):
                 quit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                self.paused = not self.paused
+                self.is_paused = not self.is_paused
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
                 if self.fps == 240:
                     self.fps = 240
@@ -97,30 +98,30 @@ class Visualizer:
 
     def _update(self):
         # Sort and update position if needed
-        if not self.is_sorted and not self.paused:
-            self.is_sorted = next(self.sorter)
+        if not self.is_sorted and not self.is_paused:
+            self.is_sorted, self.step = next(self.sort)
 
             for bar, xcoord in zip(self.bars, self.xcoords):
                 bar.rect.left = xcoord
 
         # Update display text
-        self.display['line1'] = self.display['font'].render(f"Sorted: {self.is_sorted}",
-                                                            True, self.colors['red'], None)
-        self.display['line2'] = self.display['font'].render(f"FPS: {self.fps}",
-                                                            True, self.colors['red'], None)
-        self.display['line3'] = self.display['font'].render(f"Paused: {self.paused}",
-                                                            True, self.colors['red'], None)
+        self.state_display.update({"Framerate" : self.fps,
+                                   "Step #" : self.step,
+                                   "Play/Pause" : "<space>"})
 
     def _draw(self):
         # Draw rects
-        self.screen.fill(self.colors['black'])
+        self.screen.fill(COLORS['black'])
         for surf, rect in self.bars:
             self.screen.blit(surf, rect)
 
         # Draw display
-        self.screen.blit(self.display['line1'], (0, 0))
-        self.screen.blit(self.display['line2'], (0, 8))
-        self.screen.blit(self.display['line3'], (0, 16))
+        self.screen.blit(self.state_display.surface, (0, 0))
+        if self.is_paused:
+            x, y = self.screen.get_size()
+            dx, dy = self.pause_display.surface.get_size()
+            position = (0.5 * (x - dx), 0.5 * (y - dy))
+            self.screen.blit(self.pause_display.surface, position)
 
         # Maintain framerate
         self.clock.tick(self.fps)

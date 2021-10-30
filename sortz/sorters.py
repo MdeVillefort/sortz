@@ -19,6 +19,7 @@ def bubble_sort(bars):
 
     unsorted_until_index = len(bars) - 1
     is_sorted = False
+    step = 1
 
     while not is_sorted:
         is_sorted = True
@@ -27,11 +28,12 @@ def bubble_sort(bars):
             if bars[i].rect.height > bars[i + 1].rect.height:
                 bars[i], bars[i + 1] = bars[i + 1], bars[i]
                 is_sorted = False
-                yield is_sorted
+                yield is_sorted, step
+                step += 1
 
         unsorted_until_index -= 1
 
-    yield is_sorted
+    yield is_sorted, step
 
 def selection_sort(bars):
     """
@@ -50,6 +52,7 @@ def selection_sort(bars):
     """
 
     is_sorted = False
+    step = 1
 
     for i in range(len(bars) - 1):
         lowest_num_index = i
@@ -60,10 +63,11 @@ def selection_sort(bars):
 
         if lowest_num_index != i:
             bars[i], bars[lowest_num_index] = bars[lowest_num_index], bars[i]
-            yield is_sorted
+            yield is_sorted, step
+            step += 1
 
     is_sorted = True
-    yield is_sorted
+    yield is_sorted, step
 
 def insertion_sort(bars):
     """
@@ -84,6 +88,7 @@ def insertion_sort(bars):
     surf = pygame.Surface((8, 0))
     gap = Bar(surf, surf.get_rect())
     is_sorted = False
+    step = 1
 
     for index in range(1, len(bars)):
 
@@ -94,11 +99,12 @@ def insertion_sort(bars):
             if bars[position].rect.height > temp.rect.height:
                 bars[position + 1], bars[position] = bars[position], gap
                 position -= 1
-                yield is_sorted
+                yield is_sorted, step,
+                step += 1
             else:
                 break
 
         bars[position + 1] = temp
 
     is_sorted = True
-    yield is_sorted
+    yield is_sorted, step
