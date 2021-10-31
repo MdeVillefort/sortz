@@ -58,9 +58,10 @@ class Visualizer:
         self.state_display = Display(font_size, {"Framerate" : self.fps,
                                                  "Step #" : self.step,
                                                  "Play/Pause" : "<space>"})
-        self.pause_display = Display(font_size, {"Sorting Algorithm" : self.sorter["Name"],
-                                                 "Time Complexity" : self.sorter["TimeComplexity"],
-                                                 "Description" : self.sorter["Description"]},
+        self.pause_display = Display(font_size,
+                                     {"Sorting Algorithm" : self.sorter["Name"],
+                                      "Time Complexity" : self.sorter["TimeComplexity"],
+                                      "Description" : self.sorter["Description"]},
                                      "green")
 
     def main_loop(self):
