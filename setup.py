@@ -21,6 +21,7 @@ setup(
         "Programming Language :: Python :: 3.8"
     ],
     packages = ["sortz"],
+    include_package_data = True,
     install_requires = REQUIREMENTS,
     entry_points = {
         "console_scripts" : [
